@@ -1,14 +1,13 @@
-# symbolic rxn
+# Symbolic RXN
 
-Code accompanied with our submission for `Integrating Deep Neural Networks and Symbolic Inference for Organic Reactivity Prediction`
+Integrating deep neural networks and symbolic inference for organic reactivity prediction.
 
-### Installing Dependencies
+## Installing Dependencies
 
 ```bash
-# create conda env
+# create a py3 conda env
 conda create -n symbolic_rxn python=3
 
-# install library
 # tensorflow-gpu
 conda install tensorflow-gpu=1.12.0
 # RDKit
@@ -18,26 +17,27 @@ conda config --add channels http://conda.anaconda.org/gurobi
 conda install gurobi=8.1.1
 ```
 
-### Preparing the Data
+## Preparing the Data
 
 ```bash
 # prepare the data
 unzip data.zip
 
-# preprocess the data into HDF5 for the model
+# precompute the reaction features and store them in a HDF5 format for better GPU/CPU workload
 python -m reactivity_prediction.data_digestion --input data/test.txt --output data/hdf5_test
 ```
 
 ### Preparing the Pre-Trained Model
 
 ```bash
-# download the ensembles model
+# download the ensembles models
 wget https://www.dropbox.com/s/5s3cqyfc775ytm2/ckpt.zip
-# unzip the model
+
+# unzip the models
 unzip ckpt.zip
 ```
 
-### Running Single Model
+### Running a Single Model
 
 ```bash
 # reactivity prediction w/ existing ckpt
