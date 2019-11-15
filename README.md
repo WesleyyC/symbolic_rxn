@@ -27,7 +27,7 @@ unzip data.zip
 python -m reactivity_prediction.data_digestion --input data/test.txt --output data/hdf5_test
 ```
 
-### Preparing the Pre-Trained Model
+## Preparing the Pre-Trained Models
 
 ```bash
 # download the ensembles models
@@ -37,7 +37,7 @@ wget https://www.dropbox.com/s/5s3cqyfc775ytm2/ckpt.zip
 unzip ckpt.zip
 ```
 
-### Running a Single Model
+## Running a Single Model
 
 ```bash
 # reactivity prediction w/ existing ckpt
@@ -52,7 +52,7 @@ python -m reactivity_prediction.eval --input mdl_0_output/delta_predictions.pkl
 python -m octet_sampling.run_sampler --input mdl_0_output/delta_predictions.pkl 
 ```
 
-### Running Ensemble Model
+## Running Ensemble Model
 
 ```bash
 # running the following script to genereate ensembled predi
@@ -64,3 +64,6 @@ python -m reactivity_prediction.eval --input ensemble_output/delta_predictions.p
 # run symbolic inference and evaluation
 python -m octet_sampling.run_sampler --input ensemble_output/delta_predictions.pkl
 ```
+## Contact
+
+Wesley Wei Qian (weiqian3@illinois.edu)
