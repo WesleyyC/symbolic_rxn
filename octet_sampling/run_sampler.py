@@ -16,7 +16,7 @@ from reactivity_prediction.io import OUTPUT_REACTION_STR_KEY, load_delta_pred_li
 
 parser = argparse.ArgumentParser(description='Running Sampler')
 parser.add_argument('--input', type=str, required=True)
-parser.add_argument('--topk', type=str, default='1,3,5,10,20')
+parser.add_argument('--topk', type=str, default='1,2,3,5,20')
 parser.add_argument('--log_interval', type=int, default=500)
 parser.add_argument('--verbose', action='store_true', default=False)
 args = parser.parse_args()
@@ -33,7 +33,7 @@ RESULT = {GUROBI_KEY: {COUNT_KEY: [],
 
 
 def log_result(idx):
-    print('=' * 32 + ' #{} of Items '.format(idx) + '=' * 32)
+    print('=' * 36 + ' #{} of Items '.format(idx) + '=' * 36)
     for sampler, sampler_result in RESULT.items():
         log_str = '{}: '.format(sampler)
         sampler_time = sampler_result[TIME_KEY]
