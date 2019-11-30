@@ -1,6 +1,6 @@
 # Symbolic RXN
 
-Integrating deep neural networks and symbolic inference for organic reactivity prediction.
+Integrating deep neural networks and symbolic inference for organic reactivity prediction
 
 ## System Requirements
 
@@ -31,7 +31,7 @@ conda activate symbolic_rxn
 conda install tensorflow-gpu=1.12.0
 # RDKit
 conda install -c conda-forge rdkit=2019.09.1
-# gurobi (license required)
+# gurobi
 conda config --add channels http://conda.anaconda.org/gurobi
 conda install gurobi=8.1.1
 ```
@@ -44,10 +44,10 @@ To better balance the GPU/CPU workload during training/inference, we precompute 
 # prepare the data
 unzip data.zip
 
-# digesting a small demo dataset w/ 2000 reactions (~ 30 secs)
+# digesting a small demo dataset w/ 2000 reactions (~30 secs)
 python -m reactivity_prediction.data_digestion --input data/demo.txt --output data/hdf5_demo 
 
-# digesting the full test dataset (~ 10 mins)
+# digesting the full test dataset (~10 mins)
 python -m reactivity_prediction.data_digestion --input data/test.txt --output data/hdf5_test
 ```
 
@@ -68,12 +68,12 @@ unzip ckpt.zip
 Followings are the instructions for running a single pre-trained model on the provided demo dataset:
 
 ```bash
-# reactivity prediction w/ existing ckpt (< 1 mins)
+# reactivity prediction w/ existing ckpt (<1 mins with GPU)
 python -m reactivity_prediction.run_model \
   --mode infer --ckpt ckpt/mdl_0 \
   --eval_input data/hdf5_demo --eval_output demo_output
 
-# evaluate reactivity prediction (< 30 secs)
+# evaluate reactivity prediction (<30 secs)
 python -m reactivity_prediction.eval --input demo_output/delta_predictions.pkl
 # and the program will report the bond changes coverage:
 # ==========================================================
@@ -84,7 +84,7 @@ python -m reactivity_prediction.eval --input demo_output/delta_predictions.pkl
 # ==================== Delta Evaluation ====================
 # ==========================================================
 
-# run symbolic inference and evaluation (~ 30 mins taking advatange of multi-cores)
+# run symbolic inference and evaluation (~30 mins with multi cores)
 python -m octet_sampling.run_sampler --input demo_output/delta_predictions.pkl 
 # and the program will report in the last row with the Top-K prediction accuracy:
 # ==================================== #2000 of Items ====================================
@@ -96,16 +96,16 @@ python -m octet_sampling.run_sampler --input demo_output/delta_predictions.pkl
 Followings are the instruction for reproducing our reprorted Top-k prediction accuracy on the USPTO test dataset using the ensemble models:
 
 ```bash
-# running the following script to genereate ensembled predictions (~ 80 mins or ~ 10 mins per model)
+# running the following script to genereate ensembled predictions (~80 mins or ~10 mins/model)
 bash reactivity_prediction/run_ensemble_inference.sh
 
-# evaluate reactivity prediction (< 10 mins)
+# evaluate reactivity prediction (<10 mins)
 python -m reactivity_prediction.eval --input ensemble_output/delta_predictions.pkl
 
-# run symbolic inference and evaluation (< 1 day)
+# run symbolic inference and evaluation (<1 day)
 python -m octet_sampling.run_sampler --input ensemble_output/delta_predictions.pkl
 ```
 
 ## Contact
 
-Wesley Wei Qian (weiqian3@illinois.edu)
+- Wesley Wei Qian (weiqian3@illinois.edu)
