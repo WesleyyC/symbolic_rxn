@@ -87,7 +87,7 @@ python -m reactivity_prediction.eval --input demo_output/delta_predictions.pkl
 # run symbolic inference and evaluation (~30 mins with multi cores)
 python -m octet_sampling.run_sampler --input demo_output/delta_predictions.pkl 
 # and the program will report in the last row with the Top-K prediction accuracy:
-# ==================================== #2000 of Items ====================================
+# ==================================== #2000 of Reactions Evaluated ====================================
 # Gurobi: Top1: ... Top2: ... Top3: ... Top5: ... Top20: ... Average Time: ...
 ```
 

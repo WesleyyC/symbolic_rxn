@@ -33,7 +33,7 @@ RESULT = {GUROBI_KEY: {COUNT_KEY: [],
 
 
 def log_result(idx):
-    print('=' * 36 + ' #{} of Items '.format(idx) + '=' * 36)
+    print('=' * 36 + ' #{} of Reactions Evaluated '.format(idx) + '=' * 36)
     for sampler, sampler_result in RESULT.items():
         log_str = '{}: '.format(sampler)
         sampler_time = sampler_result[TIME_KEY]
