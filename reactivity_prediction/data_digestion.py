@@ -10,9 +10,9 @@ from rdkit import RDLogger
 from input_parsing.parse_reaction import get_reactivity_prediction_features_labels
 from input_parsing.util import ATOM_FEATURES_KEY, BOND_FEATURES_KEY, NEIGHBOR_ATOM_KEY, NEIGHBOR_BOND_KEY, \
     NEIGHBOR_MASK_KEY, EDGE_DELTA_KEY, H_DELTA_KEY, C_DELTA_KEY, FEATURE_KEY, LABEL_KEY
-from reactivity_prediction.io import read_txt_in_bins, batch_reactivity_prediction_tensor_dict_list, ATOM_MASK_KEY, \
-    INPUT_HDF5_FILE_KEY, METADATA_KEY, METADATA_BIN_LIST_KEY, METADATA_WEIGHT_KEY, METADATA_BIN_SIZE_KEY, \
-    HDF5_FORMAT_KEY, REACTION_STR_KEY, EDIT_STR_KEY
+from reactivity_prediction.io import remap_atom_to_smile_idx, read_txt_in_bins, \
+    batch_reactivity_prediction_tensor_dict_list, ATOM_MASK_KEY, INPUT_HDF5_FILE_KEY, METADATA_KEY, \
+    METADATA_BIN_LIST_KEY, METADATA_WEIGHT_KEY, METADATA_BIN_SIZE_KEY, HDF5_FORMAT_KEY, REACTION_STR_KEY, EDIT_STR_KEY
 
 FEATURES = [ATOM_FEATURES_KEY, ATOM_MASK_KEY, BOND_FEATURES_KEY, NEIGHBOR_ATOM_KEY, NEIGHBOR_BOND_KEY,
             NEIGHBOR_MASK_KEY]
@@ -44,8 +44,10 @@ def data_digestion_in_hdf5(in_f, out_f):
                                 data=bins_weight.astype(np.float32))
 
     for bin in bins_list:
-        print('Processing Bucket Size {} with {} reactions.'.format(bin, len(input_in_bins[bin])))
-        tensor_dict_list = [get_reactivity_prediction_features_labels(*str_tuple) for str_tuple in input_in_bins[bin]]
+        data = input_in_bins[bin]
+        print('Processing Bucket Size {} with {} reactions.'.format(bin, len(data)))
+        data = [remap_atom_to_smile_idx(*str_tuple) for str_tuple in data]
+        tensor_dict_list = [get_reactivity_prediction_features_labels(*str_tuple) for str_tuple in data]
         batched_tensor = batch_reactivity_prediction_tensor_dict_list(tensor_dict_list, train_mode=True)
         hdf5_dataset.create_dataset('{}/{}'.format(bin, REACTION_STR_KEY),
                                     data=np.array(batched_tensor[REACTION_STR_KEY], dtype=h5py.special_dtype(vlen=str)))

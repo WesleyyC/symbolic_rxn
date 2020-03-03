@@ -154,10 +154,13 @@ def eval_reaction_bond(delta_pred_list):
                 top_k_edits.append('{}-{}-{}'.format(x + 1, y + 1, EDGE_DELTA_VAL_LIST[z]))
 
         delta_labels = get_delta_labels(reactant_mol, product_mol)
-        edit_str = delta_pred[OUTPUT_EDIT_STR_KEY].split(';')
         edge_delta_label = delta_labels[EDGE_DELTA_KEY]
-        edit_str = ['{}-{}'.format(s, edge_delta_label[int(s.split('-')[0]) - 1, int(s.split('-')[1]) - 1]) for s in
-                    edit_str]
+        edit_str = []
+        for x, y in zip(*np.nonzero(edge_delta_label)):
+            if x >= y:
+                continue
+            else:
+                edit_str.append('{}-{}-{}'.format(x+1, y+1, edge_delta_label[x, y]))
 
         return top_k_edits, edit_str
 

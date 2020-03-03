@@ -1,10 +1,12 @@
 """io util for running the model."""
 
-import h5py
-import numpy as np
 import os
 import pickle
 import random
+
+import h5py
+import numpy as np
+from rdkit import Chem
 
 from input_parsing.util import count_heavy_atom, FEATURE_KEY, ATOM_FEATURES_KEY, BOND_FEATURES_KEY, NEIGHBOR_ATOM_KEY, \
     NEIGHBOR_BOND_KEY, NEIGHBOR_MASK_KEY, LABEL_KEY, EDGE_DELTA_KEY, H_DELTA_KEY, C_DELTA_KEY, OCTET_SUM_KEY, \
@@ -38,6 +40,33 @@ OUTPUT_EDGE_DELTA_KEY = 'edge_delta_pred'
 OUTPUT_H_DELTA_KEY = 'h_delta_pred'
 OUTPUT_C_DELTA_KEY = 'c_delta_pred'
 OUTPUT_ATTENTION_SCORE = 'attention_score'
+
+
+def remap_atom_to_smile_idx(reaction_str, edit_str):
+    reactant_str, product_str = reaction_str.split('>>')
+    reactant_mol = Chem.MolFromSmiles(reactant_str)
+    product_mol = Chem.MolFromSmiles(product_str)
+    remap = {}
+    idx = 1
+    for atom in reactant_mol.GetAtoms():
+        remap[atom.GetIntProp('molAtomMapNumber')] = idx
+        atom.SetAtomMapNum(idx)
+        idx += 1
+    for atom in product_mol.GetAtoms():
+        atom.SetAtomMapNum(remap[atom.GetIntProp('molAtomMapNumber')])
+    remap_reaction_str = '{}>>{}'.format(Chem.MolToSmiles(reactant_mol), Chem.MolToSmiles(product_mol))
+
+    remap_edits = []
+    for edit in edit_str.split(';'):
+        a, b = edit.split('-')
+        a = remap[int(a)]
+        b = remap[int(b)]
+        if a >= b:
+            a, b = b, a
+        remap_edits.append('{}-{}'.format(a, b))
+    remap_edits = ';'.join(remap_edits)
+
+    return remap_reaction_str, remap_edits
 
 
 def read_txt_in_list(f):

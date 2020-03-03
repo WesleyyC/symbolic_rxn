@@ -1,5 +1,3 @@
-"""Define the neural network module."""
-
 import tensorflow as tf
 
 from input_parsing.util import EDGE_DELTA_VAL_LIST, H_DELTA_VAL_LIST, C_DELTA_VAL_LIST
@@ -9,7 +7,7 @@ def message_passing_encoding(tf_features, hidden_units, mp_step, activation=tf.n
     # get input
     atom_features, atom_mask, bond_features, neighbor_atom_idx, neighbor_bond_idx, neighbor_mask = tf_features
 
-    with tf.variable_scope('wl_message_passing_encoding'):
+    with tf.variable_scope('message_passing_encoding'):
         with tf.variable_scope('input_prep'):
             atom_features = tf.layers.dense(atom_features, hidden_units,
                                             activation=activation,
