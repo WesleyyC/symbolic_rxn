@@ -1,6 +1,8 @@
 # Symbolic RXN
 
-Integrating deep neural networks and symbolic inference for organic reactivity prediction
+Integrating Deep Neural Networks and Symbolic Inference for Organic Reactivity Prediction [[ChemRxiv]](https://doi.org/10.26434/chemrxiv.11659563)
+
+Code for the inference pipeline is here, and the complete training pipeline will be updated once the paper is accepted.
 
 ## System Requirements
 
