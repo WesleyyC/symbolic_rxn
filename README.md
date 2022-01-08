@@ -59,7 +59,7 @@ We provided the pre-trained models for reproducing our Top-K performance on the 
 
 ```bash
 # download the ensembles models
-wget https://www.dropbox.com/s/enlfd7vb5u7uuex/ckpt.zip
+wget https://www.dropbox.com/s/x8ruovxxsc5q7q6/ckpt.zip
 
 # unzip the models
 unzip ckpt.zip
